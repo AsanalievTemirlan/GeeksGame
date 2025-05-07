@@ -80,18 +80,18 @@ class MathGameViewModel : ViewModel() {
             }
 
             "<" -> {
-                correctAnswer = if (num1 < num2) "true" else "false"
-                expression.value = "$num1 < $num2"
+                correctAnswer = if (num1 < num2) "<" else ">"
+                expression.value = "$num1  $num2"
             }
 
             ">" -> {
-                correctAnswer = if (num1 > num2) "true" else "false"
-                expression.value = "$num1 > $num2"
+                correctAnswer = if (num1 > num2) ">" else "<"
+                expression.value = "$num1  $num2"
             }
 
             "=" -> {
-                correctAnswer = if (num1 == num2) "true" else "false"
-                expression.value = "$num1 = $num2"
+                correctAnswer = if (num1 == num2) "=" else if (num1 < num2) "<" else ">"
+                expression.value = "$num1  $num2"
             }
 
             else -> {
@@ -108,7 +108,7 @@ class MathGameViewModel : ViewModel() {
     }
 
     private fun generateWrongAnswers(correctAnswer: String, operator: String): List<String> {
-        return if (correctAnswer != "true" && correctAnswer != "false") {
+        return if (correctAnswer !in listOf("<", ">", "=")) {
             val baseValue = correctAnswer.toIntOrNull() ?: 0
             listOf(
                 (baseValue - Random.nextInt(1, 5)).toString(),
@@ -116,7 +116,7 @@ class MathGameViewModel : ViewModel() {
                 (baseValue + Random.nextInt(6, 10)).toString()
             ).distinct().filter { it != correctAnswer }
         } else {
-            listOf(if (correctAnswer == "true") "false" else "true")
+            return listOf("<", ">", "?", "=").filter { it != correctAnswer }
         }
     }
 
