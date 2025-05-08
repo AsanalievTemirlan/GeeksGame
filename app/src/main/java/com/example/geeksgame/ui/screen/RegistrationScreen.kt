@@ -84,14 +84,14 @@ fun RegistrationScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(horizontal = 30.dp)
         ) {
-            LogoImg(size = 200.dp)
+            LogoImg(size = 150.dp)
             Spa(30.dp)
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = "ЗАРЕГИСТРИРУЙТЕСЬ\nЧТОБЫ НАЧАТЬ",
                 color = Color.White,
                 textAlign = TextAlign.Center,
-                fontSize = 20.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
             )
             Spa(60.dp)
@@ -190,7 +190,7 @@ fun RegistrationScreen(navController: NavController) {
                 Text(
                     "ЗАРЕГИСТРИРОВАТЬСЯ",
                     color = Color.White,
-                    fontSize = 16.sp,
+                    fontSize = 12.sp,
                     fontFamily = customFontFamily
                 )
             }

@@ -29,7 +29,7 @@ fun SplashScreen(navController: NavController) {
     LaunchedEffect(key1 = true) {
         delay(2000L) // 3 секунды
         navController.popBackStack()
-        if (userPrefs.isRegistered()){
+        if (!userPrefs.isRegistered()){
             navController.navigate(Route.LOGIN)
         }
         else{
