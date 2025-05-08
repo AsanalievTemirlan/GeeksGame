@@ -22,13 +22,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.geeksgame.ui.navigation.Route.OVER
+import com.example.geeksgame.ui.screen.viewModel.MathGameViewModel
+import com.example.geeksgame.ui.screen.viewModel.PlayerViewModel
 import com.example.geeksgame.ui.theme.Black
 import com.example.geeksgame.ui.theme.GreenExtra
 import com.example.geeksgame.ui.theme.PinkExtra
@@ -43,7 +45,9 @@ fun GameScreen(navController: NavController) {
     val selectedAnswer by viewModel.selectedAnswer
     val score by viewModel.score
     val isGameRunning by viewModel.isGameRunning
-
+    val context = LocalContext.current
+    val userPrefs = UserPrefs(context)
+    val playerViewModel: PlayerViewModel = viewModel()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -115,6 +119,7 @@ fun GameScreen(navController: NavController) {
 
         LaunchedEffect(timeLeft) {
             if (timeLeft <= 0) {
+                playerViewModel.updateScore(userPrefs.getUserId()!!, score)
                 navController.navigate("over/$score") {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true

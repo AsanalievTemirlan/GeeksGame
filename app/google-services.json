@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "852187000817",
+    "project_id": "geeksgame-69fdd",
+    "storage_bucket": "geeksgame-69fdd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852187000817:android:054e66a72d64cd09371e50",
+        "android_client_info": {
+          "package_name": "com.example.geeksgame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTM8wLH9Y8884LKPXEc51pWxoioYiPOwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.example.geeksgame.ui.screen
+package com.example.geeksgame.ui.screen.viewModel
 
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +23,7 @@ class MathGameViewModel : ViewModel() {
 
     private fun startNewGame() {
         isGameRunning.value = true
-        timeLeft.value = 10
+        timeLeft.value = 30
         score.value = 0
         selectedAnswer.value = null
         viewModelScope.launch {

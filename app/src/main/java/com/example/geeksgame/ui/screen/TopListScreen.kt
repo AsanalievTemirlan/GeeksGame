@@ -1,6 +1,6 @@
 package com.example.geeksgame.ui.screen
 
-import android.util.Log
+import com.example.geeksgame.ui.screen.viewModel.PlayerViewModel
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,30 +11,28 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.geeksgame.R
+import com.example.geeksgame.ui.screen.viewModel.BitrixViewModel
 import com.example.geeksgame.ui.theme.Black
 
 @Composable
 fun TopListScreen(navController: NavController) {
     val leaders = listOf("КОЛЯ", "ПЕТЯ","ПЕТЯ","ПЕТЯ","ПЕТЯ","ПЕТЯ","ПЕТЯ", "ЛЕША", "АНЯ", "ИВАН", "ИВАН", "АРТУР", "САША", "МИША", "ОЛЕГ")
-    val viewModel: BitrixViewModel = viewModel()
-    val list = viewModel.leadList.value
+    val bitrixViewModel: BitrixViewModel = viewModel()
+    val viewModel: PlayerViewModel = viewModel()
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchLeadsFromBitrix()
-        Log.e("ololo", "TopListScreen: $list", )
-    }
+    val list by viewModel.leaderboard.collectAsState()
 
     Column(
         modifier = Modifier
@@ -73,25 +71,24 @@ fun TopListScreen(navController: NavController) {
         ) {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-
             ) {
-                itemsIndexed(leaders) { index, name ->
+                itemsIndexed(list) { index, player ->
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Row (
+                        Row(
                             horizontalArrangement = Arrangement.SpaceBetween
-                        ){
+                        ) {
                             Text(
                                 text = "${index + 1}",
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp,
-                                modifier = Modifier.width(52.dp) // фиксированная ширина для выравнивания
+                                modifier = Modifier.width(52.dp)
                             )
                             Text(
-                                text = name,
+                                text = player.name, // предполагаем, что name — это поле класса Player
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp
@@ -99,13 +96,14 @@ fun TopListScreen(navController: NavController) {
                         }
 
                         Text(
-                            text = "23 очков",
+                            text = "${player.score} очков", // предполагаем, что score — это поле
                             color = Color.White,
                             fontSize = 14.sp
                         )
                     }
                 }
             }
+
         }
     }
 }

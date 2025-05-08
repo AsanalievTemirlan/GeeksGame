@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -42,11 +43,15 @@ fun HomeScreen(navController: NavController) {
         modifier = Modifier.fillMaxSize().padding(horizontal = 30.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        Image(painter = painterResource(R.drawable.geeks_txt), contentDescription = null)
+        Box(contentAlignment = Alignment.Center) {
+            Image(
+                painter = painterResource(R.drawable.geeks_txt),
+                contentDescription = null
+            )
+        }
         Spa(50.dp)
         Button(
             onClick = {
-                /* регистрация */
                 navController.navigate(Route.GAME)
             },
             modifier = Modifier.fillMaxWidth(),

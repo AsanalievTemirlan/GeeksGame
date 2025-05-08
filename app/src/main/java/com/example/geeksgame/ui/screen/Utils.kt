@@ -31,7 +31,7 @@ fun LogoImg(
         contentDescription = null,
         modifier = Modifier
             .padding(top = top, bottom = bottom)
-            .then(if (size != null) Modifier.size(size) else Modifier)
+            .then(if (size != null) Modifier.size(size) else Modifier.size(80.dp))
     )
 }
 

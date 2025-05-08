@@ -28,8 +28,10 @@ import com.example.geeksgame.R
 import com.example.geeksgame.ui.screen.GameOverScreen
 import com.example.geeksgame.ui.screen.GameScreen
 import com.example.geeksgame.ui.screen.HomeScreen
+import com.example.geeksgame.ui.screen.LoginScreen
 import com.example.geeksgame.ui.screen.RegistrationScreen
 import com.example.geeksgame.ui.screen.SetSystemBarsColor
+import com.example.geeksgame.ui.screen.SplashScreen
 import com.example.geeksgame.ui.screen.TopListScreen
 import com.example.geeksgame.ui.theme.Black
 import com.example.geeksgame.ui.theme.Gray1
@@ -39,7 +41,7 @@ fun AppNavHost() {
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
-    val startDestination = Route.MAIN
+    val startDestination = Route.LOGIN
     SetSystemBarsColor(Black, darkIcons = false)
 
     val bottomNavScreens = listOf(
@@ -62,7 +64,7 @@ fun AppNavHost() {
                     tonalElevation = 0.dp,
                     modifier = Modifier
                         .background(Black)
-                        .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
+                        .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp, bottomEnd = 12.dp, bottomStart = 12.dp))
 
                 ) {
                     items.forEach { screen ->
@@ -116,6 +118,8 @@ fun AppNavHost() {
             composable(Route.MAIN) { HomeScreen(navController) }
             composable(Route.TOP_LIST) { TopListScreen(navController) }
             composable(Route.GAME) { GameScreen(navController) }
+            composable(Route.SPLASH) { SplashScreen(navController) }
+            composable(Route.LOGIN) { LoginScreen(navController) }
             composable(
                 route = Route.OVER,
                 arguments = listOf(navArgument("score") { type = NavType.IntType })
@@ -134,9 +138,11 @@ object Route {
     const val MAIN = "home"
     const val REGISTRATION = "registration"
     const val TOP_LIST = "list"
+    const val SPLASH = "splash"
+    const val LOGIN = "login"
 }
 
 sealed class ScreensBottom(val route: String, val title: String, val iconRes: Int) {
-    data object Home : ScreensBottom(Route.MAIN, "Home", R.drawable.ic_home)
+    data object Home : ScreensBottom(Route.MAIN, "Home", R.drawable.ic_logo)
     data object Top : ScreensBottom(Route.TOP_LIST, "Top", R.drawable.ic_top)
 }

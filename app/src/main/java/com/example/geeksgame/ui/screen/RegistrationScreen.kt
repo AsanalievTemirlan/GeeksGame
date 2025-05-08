@@ -1,5 +1,6 @@
 package com.example.geeksgame.ui.screen
 
+import com.example.geeksgame.ui.screen.viewModel.PlayerViewModel
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -38,53 +40,51 @@ import com.example.geeksgame.ui.navigation.Route
 import com.example.geeksgame.ui.theme.Black
 import com.example.geeksgame.ui.theme.YellowExtra
 import com.example.geeksgame.ui.theme.customFontFamily
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
+import com.example.geeksgame.ui.screen.viewModel.BitrixViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrationScreen(navController: NavController) {
 
+    // --- Focus Management ---
+    val nameFocusRequester = remember { FocusRequester() }
+    val phoneFocusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+
     var phoneNumber by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     val prefix = "+996"
-    val maxLength = 13 // +996XXXXXXXX (9 цифр после кода)
-
-    val viewModel: BitrixViewModel = viewModel()
+    val maxLength = 13
     val context = LocalContext.current
+    val userPrefs = UserPrefs(context)
 
-    val sendResult by viewModel.sendResult.observeAsState()
 
-    // Проверка на изменение состояния регистрации
+    val bitrixViewModel: BitrixViewModel = viewModel()
+    val viewModel: PlayerViewModel = viewModel()
+
+    val sendResult by bitrixViewModel.sendResult.observeAsState()
+
     LaunchedEffect(sendResult) {
         when (sendResult) {
-            true -> {
-                // Успех: Переходим на главный экран
-                navController.navigate(Route.MAIN)
-            }
-            false -> {
-                // Ошибка: Показать тост
-                Toast.makeText(
-                    context,
-                    "Ошибка при регистрации. Попробуйте снова.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            null -> {
-                // Отсутствие результата, ничего не делаем
-            }
+            true -> navController.navigate(Route.MAIN)
+            false -> Toast.makeText(context, "Ошибка при регистрации. Попробуйте снова.", Toast.LENGTH_SHORT).show()
+            null -> {}
         }
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Black),
+        modifier = Modifier.fillMaxSize().background(Black),
         verticalArrangement = Arrangement.SpaceEvenly,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(horizontal = 30.dp)
         ) {
-            LogoImg()
+            LogoImg(size = 200.dp)
             Spa(30.dp)
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -95,19 +95,34 @@ fun RegistrationScreen(navController: NavController) {
                 fontWeight = FontWeight.Bold,
             )
             Spa(60.dp)
+
+            // --- Name Field ---
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
                 label = { Text("ИМЯ", color = Color.White) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(nameFocusRequester),
                 textStyle = TextStyle(color = Color.White),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        phoneFocusRequester.requestFocus()
+                    }
+                ),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color.White,
                     unfocusedBorderColor = Color.Gray
                 ),
                 maxLines = 1
             )
+
             Spa(20.dp)
+
+            // --- Phone Field ---
             OutlinedTextField(
                 value = if (phoneNumber.startsWith(prefix)) phoneNumber else prefix,
                 onValueChange = {
@@ -115,17 +130,43 @@ fun RegistrationScreen(navController: NavController) {
                     phoneNumber = prefix + newValue
                 },
                 label = { Text("НОМЕР ТЕЛЕФОНА", color = Color.White) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(phoneFocusRequester),
                 maxLines = 1,
                 textStyle = TextStyle(color = Color.White),
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        val isPhoneValid = phoneNumber.length == 13 && phoneNumber.startsWith(prefix)
+                        if (name.isBlank() || !isPhoneValid) {
+                            Toast.makeText(
+                                context,
+                                "Пожалуйста, заполните все поля корректно",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            focusManager.clearFocus()
+                            bitrixViewModel.sendLeadToBitrix(name, phoneNumber)
+                            viewModel.registerPlayer(name, phoneNumber)
+                            userPrefs.saveUserId(phoneNumber)
+                            userPrefs.setRegistered(true)
+                        }
+                    }
+                ),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color.White,
                     unfocusedBorderColor = Color.Gray,
                     cursorColor = Color.White,
                 )
             )
+
             Spa(30.dp)
+
+            // --- Submit Button ---
             Button(
                 onClick = {
                     val isPhoneValid = phoneNumber.length == 13 && phoneNumber.startsWith(prefix)
@@ -136,7 +177,10 @@ fun RegistrationScreen(navController: NavController) {
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
-                        viewModel.sendLeadToBitrix(name, phoneNumber)
+                        bitrixViewModel.sendLeadToBitrix(name, phoneNumber)
+                        viewModel.registerPlayer(name, phoneNumber)
+                        userPrefs.saveUserId(phoneNumber)
+                        userPrefs.setRegistered(true)
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -153,4 +197,3 @@ fun RegistrationScreen(navController: NavController) {
         }
     }
 }
-
