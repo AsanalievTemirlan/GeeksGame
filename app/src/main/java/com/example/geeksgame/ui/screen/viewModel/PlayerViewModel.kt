@@ -1,5 +1,6 @@
 package com.example.geeksgame.ui.screen.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.geeksgame.model.Player
 import com.google.firebase.firestore.FirebaseFirestore
@@ -51,10 +52,17 @@ class PlayerViewModel : ViewModel() {
 
         db.runTransaction { transaction ->
             val snapshot = transaction.get(docRef)
-            val currentScore = snapshot.getLong("score") ?: 0
-            transaction.update(docRef, "score", currentScore + additionalPoints)
+            val currentScore = snapshot.getLong("score") ?: 0L
+            if (additionalPoints > currentScore) {
+                transaction.update(docRef, "score", additionalPoints)
+            }
+        }.addOnSuccessListener {
+            Log.e("ololo", "updateScore: all good", )
+        }.addOnFailureListener { e ->
+            e.printStackTrace()
         }
     }
+
 
     private fun loadLeaderboard(limit: Long = 10) {
         db.collection("players")

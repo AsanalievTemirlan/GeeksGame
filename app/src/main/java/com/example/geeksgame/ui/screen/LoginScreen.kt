@@ -116,6 +116,8 @@ fun LoginScreen(navController: NavController) {
                 if (!isPhoneValid) {
                     Toast.makeText(context, "Введите корректный номер", Toast.LENGTH_SHORT).show()
                 } else {
+                    userPrefs.saveUserId(phoneNumber)
+                    userPrefs.setRegistered(true)
                     viewModel.loginPlayer(phoneNumber)
                 }
             },
