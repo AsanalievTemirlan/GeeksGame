@@ -1,5 +1,6 @@
 package com.example.geeksgame.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,6 +11,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.geeksgame.R
 import com.example.geeksgame.ui.theme.Black
@@ -25,6 +28,13 @@ import com.example.geeksgame.ui.theme.Black
 @Composable
 fun TopListScreen(navController: NavController) {
     val leaders = listOf("КОЛЯ", "ПЕТЯ","ПЕТЯ","ПЕТЯ","ПЕТЯ","ПЕТЯ","ПЕТЯ", "ЛЕША", "АНЯ", "ИВАН", "ИВАН", "АРТУР", "САША", "МИША", "ОЛЕГ")
+    val viewModel: BitrixViewModel = viewModel()
+    val list = viewModel.leadList.value
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchLeadsFromBitrix()
+        Log.e("ololo", "TopListScreen: $list", )
+    }
 
     Column(
         modifier = Modifier

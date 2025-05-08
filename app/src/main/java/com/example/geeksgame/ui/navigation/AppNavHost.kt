@@ -39,6 +39,7 @@ fun AppNavHost() {
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
+    val startDestination = Route.MAIN
     SetSystemBarsColor(Black, darkIcons = false)
 
     val bottomNavScreens = listOf(
@@ -109,7 +110,7 @@ fun AppNavHost() {
     { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Route.MAIN,
+            startDestination = startDestination,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Route.MAIN) { HomeScreen(navController) }
