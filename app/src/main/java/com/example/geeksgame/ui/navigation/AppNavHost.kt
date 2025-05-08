@@ -41,7 +41,7 @@ fun AppNavHost() {
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
-    val startDestination = Route.LOGIN
+    val startDestination = Route.SPLASH
     SetSystemBarsColor(Black, darkIcons = false)
 
     val bottomNavScreens = listOf(
