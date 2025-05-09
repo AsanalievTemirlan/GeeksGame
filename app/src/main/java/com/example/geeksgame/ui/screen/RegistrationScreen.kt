@@ -181,6 +181,7 @@ fun RegistrationScreen(navController: NavController) {
                         viewModel.registerPlayer(name, phoneNumber)
                         userPrefs.saveUserId(phoneNumber)
                         userPrefs.setRegistered(true)
+                        navController.navigate(Route.MAIN)
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),

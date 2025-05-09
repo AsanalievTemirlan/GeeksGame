@@ -64,7 +64,7 @@ class PlayerViewModel : ViewModel() {
     }
 
 
-    private fun loadLeaderboard(limit: Long = 10) {
+    private fun loadLeaderboard(limit: Long = 50) {
         db.collection("players")
             .orderBy("score", Query.Direction.DESCENDING)
             .limit(limit)
