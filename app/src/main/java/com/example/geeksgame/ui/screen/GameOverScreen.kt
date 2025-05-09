@@ -1,5 +1,6 @@
 package com.example.geeksgame.ui.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,6 +28,11 @@ import com.example.geeksgame.ui.theme.customFontFamily
 
 @Composable
 fun GameOverScreen(navController: NavController, score: Int) {
+
+    BackHandler(enabled = true) {
+        navController.navigate(Route.MAIN)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
