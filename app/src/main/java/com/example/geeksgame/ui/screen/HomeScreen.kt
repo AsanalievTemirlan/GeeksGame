@@ -1,8 +1,5 @@
 package com.example.geeksgame.ui.screen
 
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -26,13 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.geeksgame.R
-import com.example.geeksgame.ui.navigation.Route
 import com.example.geeksgame.ui.navigation.Route.GAME
 import com.example.geeksgame.ui.theme.Black
 import com.example.geeksgame.ui.theme.YellowExtra
 import com.example.geeksgame.ui.theme.customFontFamily
-import okhttp3.*
-import java.io.IOException
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -58,7 +51,7 @@ fun HomeScreen(navController: NavController) {
         Spa(50.dp)
         Button(
             onClick = {
-                navController.navigate(Route.GAME)
+                navController.navigate(GAME)
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
