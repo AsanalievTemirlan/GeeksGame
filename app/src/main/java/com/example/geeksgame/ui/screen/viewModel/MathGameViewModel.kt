@@ -1,5 +1,6 @@
 package com.example.geeksgame.ui.screen.viewModel
 
+import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -40,11 +41,11 @@ class MathGameViewModel : ViewModel() {
         isGameRunning.value = false
         selectedAnswer.value = null
     }
-
+//    "+", "-", "*", "/", "%",
     private fun generateQuestion() {
-        val num1 = Random.nextInt(1, 20) // 4th-grade level range
+        val num1 = Random.nextInt(1, 20)
         val num2 = Random.nextInt(1, 20)
-        val operator = listOf("+", "-", "*", "/", "%", "<", ">", "=").random()
+        val operator = listOf( "<", ">", "=").random()
         val correctAnswer: String
         val result: Int
 
@@ -79,18 +80,13 @@ class MathGameViewModel : ViewModel() {
                 expression.value = "$num1 % $num2"
             }
 
-            "<" -> {
-                correctAnswer = if (num1 < num2) "<" else ">"
-                expression.value = "$num1  $num2"
-            }
-
-            ">" -> {
-                correctAnswer = if (num1 > num2) ">" else "<"
-                expression.value = "$num1  $num2"
-            }
-
-            "=" -> {
-                correctAnswer = if (num1 == num2) "=" else if (num1 < num2) "<" else ">"
+            "<", ">", "=" -> {
+                correctAnswer = when {
+                    num1 == num2 -> "="
+                    num1 > num2 -> ">"
+                    num1 < num2 -> "<"
+                    else -> "?"
+                }
                 expression.value = "$num1  $num2"
             }
 
@@ -130,6 +126,7 @@ class MathGameViewModel : ViewModel() {
                 generateQuestion()
             }
         } else {
+            Log.e("ololo", "selectAnswer: $answer, ${correctAnswerValue.value}", )
             viewModelScope.launch {
                 delay(500)
                 selectedAnswer.value = null
