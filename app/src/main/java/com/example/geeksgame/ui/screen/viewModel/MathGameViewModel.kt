@@ -41,11 +41,10 @@ class MathGameViewModel : ViewModel() {
         isGameRunning.value = false
         selectedAnswer.value = null
     }
-//    "+", "-", "*", "/", "%",
     private fun generateQuestion() {
         val num1 = Random.nextInt(1, 20)
         val num2 = Random.nextInt(1, 20)
-        val operator = listOf( "<", ">", "=").random()
+        val operator = listOf( "+", "-", "*", "/", "%","<", ">", "=").random()
         val correctAnswer: String
         val result: Int
 
