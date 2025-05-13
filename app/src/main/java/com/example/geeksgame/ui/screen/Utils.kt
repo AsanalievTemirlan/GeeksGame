@@ -34,14 +34,11 @@ fun LogoImg(
             .then(if (size != null) Modifier.size(size) else Modifier.size(80.dp))
     )
 }
-
 @Composable
 fun Spa(height: Dp = 20.dp) {
     Spacer(Modifier.height(height))
 
 }
-
-
 @Composable
 fun SetSystemBarsColor(color: Color, darkIcons: Boolean = false) {
     val view = LocalView.current
@@ -59,10 +56,30 @@ fun SetSystemBarsColor(color: Color, darkIcons: Boolean = false) {
         controller.isAppearanceLightNavigationBars = darkIcons
     }
 }
-
 fun Context.findActivity(): Activity? = when (this) {
     is Activity -> this
     is android.content.ContextWrapper -> baseContext.findActivity()
     else -> null
 }
 
+fun formatPrettyFraction(fraction: String): String {
+    val superscriptDigits = mapOf(
+        '0' to '⁰', '1' to '¹', '2' to '²', '3' to '³', '4' to '⁴',
+        '5' to '⁵', '6' to '⁶', '7' to '⁷', '8' to '⁸', '9' to '⁹', '-' to '⁻'
+    )
+    val subscriptDigits = mapOf(
+        '0' to '₀', '1' to '₁', '2' to '₂', '3' to '₃', '4' to '₄',
+        '5' to '₅', '6' to '₆', '7' to '₇', '8' to '₈', '9' to '₉'
+    )
+
+    val parts = fraction.split('/')
+    if (parts.size != 2) return fraction // not a fraction
+
+    val numerator = parts[0]
+    val denominator = parts[1]
+
+    val prettyNumerator = numerator.map { superscriptDigits[it] ?: it }.joinToString("")
+    val prettyDenominator = denominator.map { subscriptDigits[it] ?: it }.joinToString("")
+
+    return "$prettyNumerator⁄$prettyDenominator"
+}

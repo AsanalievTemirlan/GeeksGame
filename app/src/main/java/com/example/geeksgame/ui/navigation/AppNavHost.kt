@@ -33,6 +33,7 @@ import com.example.geeksgame.ui.screen.RegistrationScreen
 import com.example.geeksgame.ui.screen.SetSystemBarsColor
 import com.example.geeksgame.ui.screen.SplashScreen
 import com.example.geeksgame.ui.screen.TopListScreen
+import com.example.geeksgame.ui.screen.MathScreen
 import com.example.geeksgame.ui.theme.Black
 import com.example.geeksgame.ui.theme.Gray1
 
@@ -40,8 +41,7 @@ import com.example.geeksgame.ui.theme.Gray1
 fun AppNavHost() {
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-
-    val startDestination = Route.SPLASH
+    val startDestination = Route.MATH
     SetSystemBarsColor(Black, darkIcons = false)
 
     val bottomNavScreens = listOf(
@@ -127,6 +127,7 @@ fun AppNavHost() {
                 val score = backStackEntry.arguments?.getInt("score")
                 GameOverScreen(navController, score?: 0) }
             composable(Route.REGISTRATION) { RegistrationScreen(navController) }
+            composable(Route.MATH) { MathScreen(navController) }
         }
     }
 }
@@ -140,6 +141,7 @@ object Route {
     const val TOP_LIST = "list"
     const val SPLASH = "splash"
     const val LOGIN = "login"
+    const val MATH = "math"
 }
 
 sealed class ScreensBottom(val route: String, val title: String, val iconRes: Int) {

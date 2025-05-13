@@ -65,6 +65,6 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.gson)
 
-    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
 }
