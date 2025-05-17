@@ -67,4 +67,8 @@ dependencies {
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+
+// build.gradle (app)
+    implementation("io.coil-kt:coil-compose:2.4.0") // или последняя версия
+
 }

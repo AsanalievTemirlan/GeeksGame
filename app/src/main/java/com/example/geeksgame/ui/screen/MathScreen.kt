@@ -1,8 +1,20 @@
 package com.example.geeksgame.ui.screen
 
 import MathFormulaView
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,152 +26,218 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.example.geeksgame.model.ResultItem
+import com.example.geeksgame.model.loadJSONFromAsset
+import com.example.geeksgame.model.QuestionItem
+import com.example.geeksgame.ui.screen.viewModel.MathViewModel
 import com.example.geeksgame.ui.theme.Black
+import com.example.geeksgame.ui.theme.Gray2
+import com.example.geeksgame.ui.theme.GreenExtra
+import com.example.geeksgame.ui.theme.Yellow
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay
+import java.lang.reflect.Type
+import kotlin.collections.set
 
+// MathScreen.kt
+
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MathScreen(navController: NavController) {
-    var selectedOption by remember { mutableStateOf("") }
-    var timeLeft by remember { mutableStateOf(30 * 60) } // 30 минут в секундах
+    val viewModel: MathViewModel = viewModel()
+    val questionList by viewModel.questionList.collectAsState()
+    val currentIndex by viewModel.currentIndex.collectAsState()
+    val timeLeft by viewModel.timeLeft.collectAsState()
+    val selectedAnswers by viewModel.selectedAnswers.collectAsState()
 
-    val options = listOf(
-        "А",
-        "Б",
-        "В",
-        "Г"
-    )
+    val scrollState = rememberScrollState()
+    val options = listOf("A", "B", "C", "D")
 
-    // Пример выражений для сравнения
-    val expression1 = "\\frac{1}{2} - \\frac{1}{2}"
-    //val expression1 = "\\frac{\\sqrt{x^2 + 1}}{\\frac{1}{2}x}"
-    val expression2 = "1"
-
-
-    LaunchedEffect(Unit) {
-        while (timeLeft > 0) {
-            delay(1000)
-            timeLeft--
+    // Переход на экран результатов при окончании времени
+    LaunchedEffect(timeLeft) {
+        if (timeLeft == 0) {
+            val resultsJson = viewModel.getResults()
+            navController.navigate("result_screen/$resultsJson")
         }
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Black)
-    ) {
+
+    Scaffold(
+        containerColor = Black,
+        bottomBar = {
+            Button(
+                onClick = {
+                    val resultsJson = viewModel.getResults()
+                    navController.navigate("result_screen/$resultsJson")
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Gray2),
+                shape = RoundedCornerShape(6.dp),
+                modifier = Modifier.fillMaxWidth().height(56.dp)
+            ) {
+                Text("Завершить тест", fontSize = 18.sp, color = Yellow)
+            }
+        }
+    ) { paddingValues ->
+
         Column(
             modifier = Modifier
-                .padding(16.dp)
                 .fillMaxSize()
-                .background(Black)
+                .padding(paddingValues)
+                .padding(16.dp)
+                .verticalScroll(scrollState)
+                .pointerInput(currentIndex) {
+                    detectHorizontalDragGestures { _, dragAmount ->
+                        if (dragAmount > 50) viewModel.goToPreviousQuestion()
+                        else if (dragAmount < -50) viewModel.goToNextQuestion()
+                    }
+                }
         ) {
-            Text("Сравните значения:", style = MaterialTheme.typography.titleMedium)
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Таймер
-            Text(
-                text = "Осталось времени: ${timeLeft / 60}:${
-                    (timeLeft % 60).toString().padStart(2, '0')
-                }",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Red
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Две рамки с выражениями
-            // Две рамки с выражениями
+            // Header
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f)
-                        .border(1.dp, Color.White)
-                        .padding(8.dp)
-                ) {
-                    MathFormulaView(
-                        expression1,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(60.dp) // Ограничим высоту
-                    )
+                ClickableText(
+                    text = AnnotatedString("<"),
+                    onClick = { viewModel.goToPreviousQuestion() },
+                    style = MaterialTheme.typography.bodyLarge.copy(color = Color.White, fontSize = 24.sp)
+                )
+                Text(
+                    text = "${timeLeft / 60}:${(timeLeft % 60).toString().padStart(2, '0')}",
+                    color = Color.Red,
+                    fontSize = 18.sp
+                )
+                ClickableText(
+                    text = AnnotatedString(">"),
+                    onClick = { viewModel.goToNextQuestion() },
+                    style = MaterialTheme.typography.bodyLarge.copy(color = Color.White, fontSize = 24.sp)
+                )
+            }
+
+            Spacer(Modifier.height(16.dp))
+
+            AnimatedContent(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateContentSize() // <--- важно
+                    .background(Black), // <--- фон, чтобы не было артефактов
+                targetState = currentIndex,
+                transitionSpec = {
+                    if (targetState > initialState) {
+                        slideInHorizontally(animationSpec = tween(300)) { width -> width } togetherWith
+                                slideOutHorizontally(animationSpec = tween(300)) { width -> -width }
+                    } else {
+                        (slideInHorizontally(animationSpec = tween(300)) { width -> -width }).togetherWith(
+                            slideOutHorizontally(animationSpec = tween(300)) { width -> width })
+                    }.using(SizeTransform(clip = true))
                 }
+            ) { index ->
+                val question = questionList.getOrNull(index)
+                question?.let {
+                    Column {
+                        Text("Задание ${it.id}", fontSize = 18.sp)
 
-                Spacer(modifier = Modifier.width(20.dp))
+                        it.question?.takeIf { it.isNotBlank() }?.let { latex ->
+                            Box(Modifier.fillMaxWidth()) {
+                                MathFormulaView(latex)
+                            }
+                        }
 
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f)
-                        .border(1.dp, Color.White)
-                        .padding(8.dp)
-                ) {
-                    MathFormulaView(
-                        expression2,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(60.dp)
-                    )// Ограничим высоту)
+                        it.imageQuestion?.takeIf { it.isNotBlank() }?.let { url ->
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current).data(url).crossfade(true).build(),
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxWidth().padding(top = 0.dp).height(150.dp)
+                            )
+                        }
+
+                        Spacer(Modifier.height(16.dp))
+
+                        if (it.answers.size >= 2) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth().height(100.dp),
+                                horizontalArrangement = Arrangement.SpaceEvenly,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                it.answers.take(2).forEach { ans ->
+                                    Box(
+                                        contentAlignment = Alignment.Center,
+                                        modifier = Modifier.weight(1f).fillMaxHeight().border(1.dp, Color.White).padding(0.dp)
+                                    ) {
+                                        MathFormulaView(latex = ans)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Варианты ответа (А, Б, В, Г)
+            val selected = selectedAnswers[currentIndex] ?: ""
             options.forEach { option ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
                         .selectable(
-                            selected = (option == selectedOption),
-                            onClick = { selectedOption = option },
+                            selected = (option == selected),
+                            onClick = { viewModel.selectAnswer(currentIndex, option) },
                             role = Role.RadioButton
                         )
                         .padding(8.dp)
                 ) {
                     RadioButton(
-                        selected = (option == selectedOption),
-                        onClick = { selectedOption = option }
+                        selected = (option == selected),
+                        onClick = { viewModel.selectAnswer(currentIndex, option) },
+                        colors = RadioButtonDefaults.colors(selectedColor = Yellow)
                     )
-                    Text(
-                        text = option,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
+                    Text(option, Modifier.padding(start = 8.dp), color = Color.White)
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            if (selectedOption.isNotEmpty()) {
-                Text("Вы выбрали: $selectedOption", fontWeight = FontWeight.Bold)
+            if (selected.isNotEmpty()) {
+                Spacer(Modifier.height(8.dp))
+                Button(
+                    onClick = { viewModel.goToNextQuestion() },
+                    colors = ButtonDefaults.buttonColors(containerColor = GreenExtra),
+                    shape = RoundedCornerShape(6.dp)
+                ) {
+                    Text("Далее ->")
+                }
             }
         }
     }

@@ -1,0 +1,332 @@
+[
+  {
+    "id": 1,
+    "question": null,
+    "answers": [
+      "\\frac{1 - 0.93}{0.93 - 1}",
+      "1"
+    ],
+    "correctAnswer": "B",
+    "category": "дроби",
+    "imageQuestion": null
+  },
+  {
+    "id": 2,
+    "question": null,
+    "answers": [
+      "\\frac{89}{91}",
+      "\\frac{91}{89}"
+    ],
+    "correctAnswer": "B",
+    "category": "дроби",
+    "imageQuestion": null
+  },
+  {
+    "id": 3,
+    "question": "\\text{6 литров ряженки весят столько же, сколько 7 литров кефира}",
+    "answers": [
+      "\\text{Масса 1 литра ряженки}",
+      "\\text{Масса 1 литра кефира}"
+    ],
+    "correctAnswer": "A",
+    "category": "масса",
+    "imageQuestion": null
+  },
+  {
+    "id": 4,
+    "question": null,
+    "answers": [
+      "\\frac{3}{2} + 1 + \\frac{1}{2} + 2",
+      "\\frac{4}{3} + 2 + \\frac{2}{3}"
+    ],
+    "correctAnswer": "A",
+    "category": "арифметика",
+    "imageQuestion": null
+  },
+  {
+    "id": 5,
+    "question": null,
+    "answers": [
+      "4\\sqrt{3}",
+      "\\frac{4}{\\sqrt{3}}"
+    ],
+    "correctAnswer": "A",
+    "category": "корни",
+    "imageQuestion": null
+  },
+  {
+    "id": 6,
+    "question": "\\text{Точки E, F и D — середины сторон треугольника ABC}",
+    "answers": [
+      "\\text{Площадь внутренней области треугольника EFD}",
+      "\\text{Площадь внутренней области треугольника DFC}"
+    ],
+    "correctAnswer": "C",
+    "category": "геометрия",
+    "imageQuestion": "https://github.com/AsanalievTemirlan/Images/blob/main/Img6.png?raw=true"
+  },
+  {
+    "id": 7,
+    "question": null,
+    "answers": [
+      "(-3)^{10}",
+      "(-3)^{11}"
+    ],
+    "correctAnswer": "A",
+    "category": "степени",
+    "imageQuestion": null
+  },
+  {
+    "id": 8,
+    "question": "x + y = 9, \\quad 2y < x",
+    "answers": [
+      "y",
+      "3"
+    ],
+    "correctAnswer": "A",
+    "category": "уравнения и неравенства",
+    "imageQuestion": null
+  },
+  {
+    "id": 9,
+    "question": "\\text{На координатной плоскости точки (m; 0) и (0; n)}",
+    "answers": [
+      "n",
+      "m"
+    ],
+    "correctAnswer": "D",
+    "category": "координаты",
+    "imageQuestion": "https://github.com/AsanalievTemirlan/Images/blob/main/Img9.png?raw=true"
+  },
+  {
+    "id": 10,
+    "question": "b > 1",
+    "answers": [
+      "\\sqrt{b^2 - 1}",
+      "b"
+    ],
+    "correctAnswer": "B",
+    "category": "корни и неравенства",
+    "imageQuestion": null
+  },
+  {
+    "id": 11,
+    "question": "\\frac{x + y}{2} = 4, \\quad \\frac{z + u + t}{3} = 6",
+    "answers": [
+      "\\frac{x + y + z + u + t}{5}",
+      "5"
+    ],
+    "correctAnswer": "B",
+    "category": "среднее",
+    "imageQuestion": null
+  },
+  {
+    "id": 12,
+    "question": null,
+    "answers": [
+      "\\frac{23}{32}",
+      "\\frac{115}{163}"
+    ],
+    "correctAnswer": "B",
+    "category": "дроби",
+    "imageQuestion": null
+  },
+  {
+    "id": 13,
+    "question": "x > 0, \\quad x^2 - xy > 0",
+    "answers": [
+      "y",
+      "x"
+    ],
+    "correctAnswer": "B",
+    "category": "уравнения и неравенства",
+    "imageQuestion": null
+  },
+  {
+    "id": 14,
+    "question": "\\alpha, \\beta, \\gamma\\ text{ — градусная мера внутренних углов треугольника, \\quad \\alpha < \\beta < \\gamma}",
+    "answers": [
+      "\\alpha",
+      "60"
+    ],
+    "correctAnswer": "A",
+    "category": "углы",
+    "imageQuestion": null
+  },
+  {
+    "id": 15,
+    "question": "\\text{Периметр квадрата ABCD равен 4}",
+    "answers": [
+      "\\text{Периметр треугольника } AED",
+      "1"
+    ],
+    "correctAnswer": "A",
+    "category": "геометрия",
+    "imageQuestion": "https://github.com/AsanalievTemirlan/Images/blob/main/Img15.png?raw=true"
+  },
+  {
+    "id": 16,
+    "question": "f(x) = kx + b",
+    "answers": [
+      "f(1)",
+      "k + b"
+    ],
+    "correctAnswer": "B",
+    "category": "функции",
+    "imageQuestion": null
+  },
+  {
+    "id": 17,
+    "question": null,
+    "answers": [
+      "-\\frac{7}{9}",
+      "-0.7"
+    ],
+    "correctAnswer": "A",
+    "category": "дроби",
+    "imageQuestion": null
+  },
+  {
+    "id": 18,
+    "question": "x > y, z > y",
+    "answers": [
+      "x",
+      "z"
+    ],
+    "correctAnswer": "Г",
+    "category": "уравнения и неравенства",
+    "imageQuestion": null
+  },
+  {
+    "id": 19,
+    "question": "\\text{На числовой оси точки a = 0, b = 2}",
+    "answers": [
+      "b - a",
+      "2"
+    ],
+    "correctAnswer": "B",
+    "category": "координаты",
+    "imageQuestion": "https://github.com/AsanalievTemirlan/Images/blob/main/Img19.png?raw=true"
+  },
+  {
+    "id": 20,
+    "question": "\\text{В прямоугольной системе координат график функции y = f(x), f(a) = 0}",
+    "answers": [
+      "a",
+      "0"
+    ],
+    "correctAnswer": "B",
+    "category": "функции",
+    "imageQuestion": "https://github.com/AsanalievTemirlan/Images/blob/main/Img20.png?raw=true"
+  },
+  {
+    "id": 21,
+    "question": "\\left(\\frac{2}{3}\\right)^a \\cdot \\left(\\frac{3}{2}\\right)^b",
+    "answers": [
+      "a + b",
+      "0"
+    ],
+    "correctAnswer": "B",
+    "category": "степени",
+    "imageQuestion": null
+  },
+  {
+    "id": 22,
+    "question": null,
+    "answers": [
+      "100^{2} - 99^{2}",
+      "100 + 99"
+    ],
+    "correctAnswer": "A",
+    "category": "арифметика",
+    "imageQuestion": null
+  },
+  {
+    "id": 23,
+    "question": "\\text{На окружности угол 50 градусов}",
+    "answers": [
+      "x",
+      "35"
+    ],
+    "correctAnswer": "B",
+    "category": "геометрия",
+    "imageQuestion": "https://github.com/AsanalievTemirlan/Images/blob/main/Img23.png?raw=true"
+  },
+  {
+    "id": 24,
+    "question": "\\text{a = 3, b = 4}",
+    "answers": [
+      "\\frac{3}{4} - \\frac{4}{3}",
+      "0"
+    ],
+    "correctAnswer": "A",
+    "category": "дроби",
+    "imageQuestion": null
+  },
+  {
+    "id": 25,
+    "question": "\\text{ABCD — трапеция, \\quad AB = BC}",
+    "answers": [
+      "\\frac{x \\cdot y}{z^2}",
+      "1"
+    ],
+    "correctAnswer": "B",
+    "category": "геометрия",
+    "imageQuestion": "https://github.com/AsanalievTemirlan/Images/blob/main/Img25.png?raw=true"
+  },
+  {
+    "id": 26,
+    "question": null,
+    "answers": [
+      "\\frac{104!}{102!}",
+      "\\frac{52!}{51!}"
+    ],
+    "correctAnswer": "A",
+    "category": "факториалы",
+    "imageQuestion": null
+  },
+  {
+    "id": 27,
+    "question": null,
+    "answers": [
+      "\\log_2 6 - \\log_2 1",
+      "\\log_2 6 + \\log_2 1"
+    ],
+    "correctAnswer": "A",
+    "category": "логарифмы",
+    "imageQuestion": null
+  },
+  {
+    "id": 28,
+    "question": "\\text{\\alpha, \\beta, \\gamma — внутренние углы треугольника}",
+    "answers": [
+      "\\tan(\\alpha + \\beta + \\gamma)",
+      "0"
+    ],
+    "correctAnswer": "C",
+    "category": "тригонометрия",
+    "imageQuestion": null
+  },
+  {
+    "id": 29,
+    "question": "\\text{Для всех положительных чисел a и b задана операция:} \\quad a \\square b = \\frac{2a + 1}{2b + 1}",
+    "answers": [
+      "3 \\square 4",
+      "4 \\square 3"
+    ],
+    "correctAnswer": "B",
+    "category": "новые операции",
+    "imageQuestion": null
+  },
+  {
+    "id": 30,
+    "question": "\\text{a — целое положительное число}",
+    "answers": [
+      "\\left(\\frac{1}{3}\\right)^a + \\frac{1}{2}",
+      "1"
+    ],
+    "correctAnswer": "B",
+    "category": "степени и дроби",
+    "imageQuestion": null
+  }
+]

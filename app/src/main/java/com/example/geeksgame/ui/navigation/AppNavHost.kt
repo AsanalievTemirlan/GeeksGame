@@ -34,6 +34,7 @@ import com.example.geeksgame.ui.screen.SetSystemBarsColor
 import com.example.geeksgame.ui.screen.SplashScreen
 import com.example.geeksgame.ui.screen.TopListScreen
 import com.example.geeksgame.ui.screen.MathScreen
+import com.example.geeksgame.ui.screen.ResultScreen
 import com.example.geeksgame.ui.theme.Black
 import com.example.geeksgame.ui.theme.Gray1
 
@@ -128,6 +129,16 @@ fun AppNavHost() {
                 GameOverScreen(navController, score?: 0) }
             composable(Route.REGISTRATION) { RegistrationScreen(navController) }
             composable(Route.MATH) { MathScreen(navController) }
+            composable(
+                route = "result_screen/{jsonResults}",
+                arguments = listOf(navArgument("jsonResults") {
+                    type = NavType.StringType
+                })
+            ) { backStackEntry ->
+                val jsonResults = backStackEntry.arguments?.getString("jsonResults")
+                ResultScreen(jsonResults, navController)
+            }
+
         }
     }
 }
